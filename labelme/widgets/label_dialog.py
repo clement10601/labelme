@@ -118,10 +118,13 @@ class LabelDialog(QtWidgets.QDialog):
         self.edit.setSelection(0, len(text))
         items = self.labelList.findItems(text, QtCore.Qt.MatchFixedString)
         if items:
-            assert len(items) == 1
-            self.labelList.setCurrentItem(items[0])
-            row = self.labelList.row(items[0])
-            self.edit.completer().setCurrentRow(row)
+            try:
+                assert len(items) >= 1
+                self.labelList.setCurrentItem(items[0])
+                row = self.labelList.row(items[0])
+                self.edit.completer().setCurrentRow(row)
+            except AssertionError as e:
+                print(e)
         self.edit.setFocus(QtCore.Qt.PopupFocusReason)
         if move:
             self.move(QtGui.QCursor.pos())
